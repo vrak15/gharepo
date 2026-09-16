@@ -1,20 +1,29 @@
 name: Basic Validation
 
+# Trigger: runs on every push
 on:
-  push:              
+  push:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # Step 3: Run the validation script
       - name: Run validation
         run: python validate.py
+
+      # Step 4: Add a summary (nice touch for the Actions page)
+      - name: Summary
+        if: success()
+        run: echo "### ✅ Validation passed" >> $GITHUB_STEP_SUMMARY
